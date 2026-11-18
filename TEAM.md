@@ -2,9 +2,9 @@
 
 ## Thông tin nhóm
 
-- Tên nhóm (`TenNhom`, không dấu, không khoảng trắng):
-- Lớp: `L3A` / `L3B`
-- Repo của bàn: `K5-<L3A|L3B>-DAY10-<TenNhom>-PoCtoPilotGate1`
+- Tên nhóm (`TenNhom`, không dấu, không khoảng trắng): DDM
+- Lớp: `L3A`
+- Repo của bàn: `K5-L3A-DAY10-DDM-PoCtoPilotGate1`
 - Thẻ sự cố đã bốc (S1–S8):
 
 ## Thành viên
@@ -15,7 +15,7 @@ Họ tên đầy đủ và MSSV của **mọi** thành viên; thêm dòng nếu 
 | --: | --------- | ---- | --- | :---------: |
 |   1 |           |      |     |             |
 |   2 |           |      |     |             |
-|   3 |           |      |     |             |
+|   3 | Nguyễn Văn Minh | 2A202603551 | Vận hành và pháp lý (Ops/Legal) | Không |
 |   4 |           |      |     |             |
 
 Ghi `members` trong `submission/submission.json` theo dạng `"HoVaTen-MSSV"`, khớp bảng trên.
@@ -24,20 +24,24 @@ Ghi `members` trong `submission/submission.json` theo dạng `"HoVaTen-MSSV"`, k
 
 Mỗi thành viên tự viết một mục bên dưới (chép mẫu, đổi tiêu đề thành họ tên không dấu và MSSV, ví dụ `## NguyenVanAn-20241234`).
 
-## HoVaTen-MSSV
+## NguyenVanMinh-2A202603551
 
 ### Phần việc phụ trách
 
-Vai trong bàn; câu nào của đề, mục nào của phiếu A/B/C, file nào (`lab10/guards.py`, `config/operating_gates.json`, …).
+Ops/Legal: CP1 thông tin nhóm và thiết lập; CP2 câu 1.2 (Phiếu A A1), 1.4 (A2), hỗ trợ 1.5 (A3). Các bước sau: câu 2.4, 2.10, các mục Ops/Legal của Phiếu C và submission.
 
 ### Đóng góp cụ thể
 
-...
+- CP1: cập nhật tên nhóm và lớp; cấu hình upstream; kiểm tra 13 public tests.
+- CP2: mục tiêu của chị Oanh/chị Hạnh; telemetry rò rỉ PII tới hãng; giải thích khoảng tin cậy.
+- Dùng ChatGPT hỗ trợ đọc tài liệu, code và biên soạn phần Ops/Legal; đã đối chiếu dữ liệu mock.
 
 ### Bằng chứng
 
-Mã commit, mã lần chạy (`runs/<mã>`), dòng trong phiếu.
+- Phiếu A: A1 câu 1.2, A2 cột telemetry câu 1.4, A3 câu 1.5.
+- 13 public tests OK; commit và run ID cập nhật sau khi đồng bộ.
 
 ### Exit ticket
 
-Một điều học được, một điều còn chưa chắc.
+- Học được: cổng vận hành và telemetry bảo vệ bên thứ ba phải độc lập với model.
+- Chưa chắc: năng lực nhân sự và rò rỉ dữ liệu trong pilot thực tế cần đo tiếp.
