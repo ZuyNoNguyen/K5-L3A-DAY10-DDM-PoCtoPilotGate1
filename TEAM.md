@@ -28,13 +28,14 @@ Mỗi thành viên tự viết một mục bên dưới (chép mẫu, đổi ti�
 
 ### Phần việc phụ trách
 
-Ops/Legal: CP1 thiết lập và thông tin nhóm; CP2 câu 1.2 (A1), 1.4 (A2), hỗ trợ 1.5 (A3); CP3 câu 2.4 (B4 HAZOP, B5 checklist) và câu 2.10 (B7.5 runbook, B7.6 giờ cao điểm), cấu hình operations/legal. Tiếp theo: các mục Ops/Legal trong Phiếu C và kiểm tra submission.
+Ops/Legal: CP1 thiết lập và thông tin nhóm; CP2 câu 1.2 (A1), 1.4 (A2), hỗ trợ 1.5 (A3); CP3 B4 HAZOP, B5 checklist, B7.5–B7.6 runbook và config operations/legal; CP4 thẻ S5: phân tích rủi ro chi phí/đối soát theo kho và sổ cái, HAZOP vòng 2, cập nhật checklist/runbook, rà soát báo cáo S5 và submission.
 
 ### Đóng góp cụ thể
 
 - CP1: cập nhật tên nhóm và lớp; cấu hình upstream; kiểm tra 13 public tests.
 - CP2: mục tiêu của chị Oanh/chị Hạnh; telemetry rò rỉ PII tới hãng; giải thích khoảng tin cậy.
 - CP3: câu 2.4 (Phiếu B B4 HAZOP và B5 checklist 9 nhóm có PIC), câu 2.10 (B7.5 runbook 1–3, B7.6 giờ cao điểm); thiết lập operations/legal trong config dựa trên ops_limits, ops_facts và tiêu chí đã ký, không sửa khối business.
+- CP4 (Ops/Legal, S5): đọc thẻ từ repo phát đề và đối chiếu `ledger_seed`, `warehouse_id`, ticket dài với báo cáo; xác định chi phí kép HCM-B2B khi qua LLM rồi chuyển người, và nguy cơ hoàn trùng/hoàn thiếu tại `S5-21`; rà HAZOP C4, giả định môi trường C5, risk register C10 và checklist/runbook 4–5 C11. Đề xuất ngưỡng cảnh báo theo kho, phân quyền NV-TUNG/NV-HANH/NV-OANH. Việc sửa guard/monitor và quyết định phạm vi v2 do Engineer/PM chốt trên main.
 - Dùng ChatGPT hỗ trợ đọc tài liệu, code và biên soạn phần Ops/Legal; đã đối chiếu dữ liệu mock.
 
 ### Bằng chứng
@@ -44,6 +45,7 @@ Ops/Legal: CP1 thiết lập và thông tin nhóm; CP2 câu 1.2 (A1), 1.4 (A2), 
 - Git commit cá nhân: CP1–CP2 `cd8f031`; CP3 `4b284b8`. Main đã ghép nội dung tại `033c104` và chốt vòng 1 tại `c9fd022`.
 - Public tests: 13/13 OK; prepared run `R-base-prepared-20261118-153046-d0beba` có pass_rate = 1, pass^k = 1, 0 hoàn sai, 0 lỗi hãng oan, 0 PII leak, 0 ca ùn. Bản round1 được khóa hash `34a3f1e5`.
 - Kết quả vận hành: 1 người duyệt, 6 ca/giờ, chờ tối đa 60 phút, kiểm mẫu 10%, chặn PII khi gửi hãng và yêu cầu nguyên nhân tracking trước khi ghi lỗi hãng. Trên bộ nền, chi phí trung bình 4.456đ/ticket, ROI 1,24.
+- S5: thẻ `incidents/S5/card.md`, ticket `S5-21`, `S5-50`–`S5-61`, `world_patch.ledger_seed`; report vòng 2 từ nhóm tại `submission/runs/grade-report.md` và Phiếu C C3.5, C4, C5, C9–C11. Bản chính thức ghi quyết định v2 `Thu hẹp` tại commit `20c00b8`.
 
 ### Exit ticket
 
