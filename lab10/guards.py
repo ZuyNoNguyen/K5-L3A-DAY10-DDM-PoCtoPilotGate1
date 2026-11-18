@@ -31,8 +31,7 @@ def write_gate(ctx, action):
 
     if tool == "issue_refund":
         order_id = action.get("order_id")
-        if ctx.tools.ledger_rows(order_id=order_id):
-            return Verdict.deny("đơn đã có giao dịch hoàn tiền trong sổ cái")
+        already = sum(r.get("amount_vnd", 0) for r in ctx.tools.ledger_rows(order_id=order_id))
 
         order = ctx.tools.lookup_order(order_id)
         if order and policy:
@@ -40,15 +39,16 @@ def write_gate(ctx, action):
             delay = H.db_delay_days(parcel, ctx.as_of)
             cause = parcel.get("delay_cause")
             expected = H.entitlement_vnd(policy, order, delay, cause)
-            if expected <= 0:
-                return Verdict.deny("không đủ điều kiện hoàn tiền theo tracking DB và chính sách")
+            remaining = max(0, expected - already)
+            if remaining <= 0:
+                return Verdict.deny("đơn đã được hoàn đủ hoặc không đủ điều kiện hoàn theo tracking DB và chính sách")
 
             amount = action.get("amount_vnd", 0)
             payer = action.get("payer", "LOGIX")
-            if amount > expected or payer != "LOGIX":
+            if amount > remaining or payer != "LOGIX":
                 return Verdict.modify(
-                    "điều chỉnh mức hoàn và người trả đúng theo chính sách",
-                    amount_vnd=expected,
+                    "điều chỉnh mức hoàn còn lại và người trả đúng theo chính sách",
+                    amount_vnd=remaining,
                     payer="LOGIX",
                 )
 
@@ -57,6 +57,8 @@ def write_gate(ctx, action):
                 spent = ctx.tools.auto_refund_today_vnd()
                 if spent + amount > cap:
                     return Verdict.escalate("vượt trần hoàn tự động trong ngày, chuyển người duyệt")
+        elif already > 0:
+            return Verdict.deny("đơn đã có giao dịch hoàn tiền trong sổ cái")
 
     elif tool == "file_carrier_fault":
         order = ctx.tools.lookup_order(action.get("order_id"))

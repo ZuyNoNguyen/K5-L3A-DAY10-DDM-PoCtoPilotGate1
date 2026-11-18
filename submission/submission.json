@@ -3,12 +3,12 @@
   "members": [
     "NguyenVanMinh-2A202603551"
   ],
-  "incident": "",
+  "incident": "S5",
   "decision_v1": "Tiếp tục",
-  "decision_v2": "",
+  "decision_v2": "Thu hẹp",
   "three_lines": {
-    "environment_assumption": "",
-    "reduce_or_prevent": "",
-    "measure_in_pilot": ""
+    "environment_assumption": "Thiết kế của đội giả định sổ cái ledger_rows() luôn được cập nhật tức thời cho mọi giao dịch hoàn tiền (kể cả hoàn tay) và cơ cấu đơn hàng ở 4 kho lẻ (HN, HCM, DN, CT) tiếp tục nằm chủ yếu dưới hạn mức tự động 300.000đ.",
+    "reduce_or_prevent": "Cổng loại trừ kho HCM-B2B (pilot_scope) và cổng tính phần hoàn còn lại (remaining = expected - already trong guards.py) thực sự NGĂN hẳn lỗ vận hành ở HCM-B2B (10.382đ -> 0 ca qua LLM) và ngăn hoàn trùng/thiếu hoàn (wrongful_refund = 0, under_refund = 0) dựa trên dữ liệu tất định từ DB; còn cost_budget_per_ticket_vnd = 1500 chỉ GIẢM thiệt hại tiền LLM vì vẫn tốn 10.000đ công người duyệt khi ticket dài bị escalate.",
+    "measure_in_pilot": "Trước Gate 2, cần đo lại ở pilot thật tại 4 kho (HN, HCM, DN, CT): (1) estimated_cost_per_ticket_vnd theo từng kho (đối chiếu trần 7.000đ và làm tay 10.000đ), (2) tỉ lệ escalated do ticket dài vượt 1.500đ hoặc vượt 300.000đ, (3) độ trễ đồng bộ sổ cái thực tế, và (4) wait_max_min tại hàng chờ của NV-HANH."
   }
 }
