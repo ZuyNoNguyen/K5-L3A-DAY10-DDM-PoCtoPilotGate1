@@ -1,0 +1,4 @@
+# Manifest and signed files must have byte-identical checkout on Windows/Linux.
+* text=auto eol=lf
+lab10/guards_round1.py text eol=crlf
+submission/code/guards_round1.py text eol=crlf
