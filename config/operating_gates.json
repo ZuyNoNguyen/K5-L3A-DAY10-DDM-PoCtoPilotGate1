@@ -3,22 +3,41 @@
   "business": {
     "daily_refund_cap_vnd": null,
     "cost_budget_per_ticket_vnd": null,
-    "pilot_scope": {"mode": "all", "warehouses": [], "percent": 100},
+    "pilot_scope": {
+      "mode": "all",
+      "warehouses": [],
+      "percent": 100
+    },
     "roi_min": null
   },
   "operations": {
-    "pic": "",
-    "approver_id": "",
+    "pic": "NV-TUNG",
+    "approver_id": "NV-HANH",
     "reviewers_on_shift": 1,
-    "review_capacity_per_hour": null,
-    "max_queue_wait_minutes": null,
-    "stop_conditions": [],
-    "alert_channel": "",
-    "decision_note": false,
-    "review_sampling_pct": 0
+    "review_capacity_per_hour": 6,
+    "max_queue_wait_minutes": 60,
+    "stop_conditions": [
+      "Khi phát hiện 1 lan ro ri PII, 1 loi hang oan hoac hoan sai: NV-TUNG dung luong ghi lien quan trong toi da 5 phut, bao NV-HANH va NV-OANH.",
+      "Khi co 1 ca un hoac cho duyet qua 60 phut: ngung mo rong pilot va chuyen ca moi sang xu ly thu cong, goi ho tro.",
+      "Khi tien hoan tu dong cham tran business/Finance hoac chi phi moi ticket vuot 7000 VND: dung tu dong hoa lien quan va bao Ops/Finance."
+    ],
+    "alert_channel": "Kenh truc noi bo LogiX Ops/CSKH (NV-TUNG, NV-HANH; NV-OANH khi lien quan doi soat)",
+    "decision_note": true,
+    "review_sampling_pct": 10
   },
   "legal": {
-    "pii_fields_blocked_to_third_party": [],
-    "carrier_fault_requires_recorded_cause": false
+    "pii_fields_blocked_to_third_party": [
+      "customer_note",
+      "recipient_contact",
+      "name",
+      "phone",
+      "street",
+      "address",
+      "email",
+      "customer_phone",
+      "recipient_name",
+      "recipient_phone"
+    ],
+    "carrier_fault_requires_recorded_cause": true
   }
 }

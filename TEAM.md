@@ -34,11 +34,13 @@ Ops/Legal: CP1 thông tin nhóm và thiết lập; CP2 câu 1.2 (Phiếu A A1), 
 
 - CP1: cập nhật tên nhóm và lớp; cấu hình upstream; kiểm tra 13 public tests.
 - CP2: mục tiêu của chị Oanh/chị Hạnh; telemetry rò rỉ PII tới hãng; giải thích khoảng tin cậy.
+- CP3: câu 2.4 (Phiếu B B4 HAZOP và B5 checklist 9 nhóm có PIC), câu 2.10 (B7.5 runbook 1–3, B7.6 giờ cao điểm); thiết lập operations/legal trong config dựa trên ops_limits, ops_facts và tiêu chí đã ký, không sửa khối business.
 - Dùng ChatGPT hỗ trợ đọc tài liệu, code và biên soạn phần Ops/Legal; đã đối chiếu dữ liệu mock.
 
 ### Bằng chứng
 
 - Phiếu A: A1 câu 1.2, A2 cột telemetry câu 1.4, A3 câu 1.5.
+- Phiếu B: B4, B5, B7.5, B7.6; `config/operating_gates.json` mục operations/legal. Mốc checkpoint/grade do Gate Engineer chạy sau đồng bộ.
 - 13 public tests OK; commit và run ID cập nhật sau khi đồng bộ.
 
 ### Exit ticket
