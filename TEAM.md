@@ -13,7 +13,7 @@ Họ tên đầy đủ và MSSV của **mọi** thành viên; thêm dòng nếu 
 
 | STT | Họ và tên | MSSV | Vai | Trưởng nhóm |
 | --: | --------- | ---- | --- | :---------: |
-|   1 |           |      |     |             |
+|   1 | Nguyễn Khánh Duy | 2A202603575 | Kỹ sư cổng (Gate Engineer) | Có |
 |   2 |           |      |     |             |
 |   3 | Nguyễn Văn Minh | 2A202603551 | Vận hành và pháp lý (Ops/Legal) | Không |
 |   4 |           |      |     |             |
@@ -59,3 +59,28 @@ B6 trên `main` được chốt khi mới có lăng kính Kinh doanh. Hai nguy c
 - **Kỹ thuật – INVALID/WRONG (đề xuất cả bàn kiểm tra ở C1):** Chính sách có thể hết hiệu lực hoặc lời kể của khách khác dữ liệu tracking, gây hoàn sai/ghi lỗi oan. Nguồn: `effective_policy`, `db_delay_days`, trace `T-002@55`; cổng vòng 1 đối chiếu trước khi ghi.
 
 Đây là rủi ro cần đối chiếu và kiểm chứng ở CP4, không được dùng để sửa lịch sử checkpoint CP3.
+
+## NguyenKhanhDuy-2A202603575
+
+### Phần việc phụ trách
+
+Trưởng nhóm & Kỹ sư cổng: CP1 (tạo nhánh, gắn `upstream`, danh tính Git, 13 public tests); CP2 (ký tiêu chí `config/acceptance_criteria.json`, Phiếu A câu 1.1, 1.3, 1.5, 1.6, A5); CP3 (chạy `base`, trace `T-002@55`, code 3 cổng vòng 1 trong `lab10/guards.py`, 2 ticket `--adhoc`, merge 3 nhánh, chạy `checkpoint`, chốt v1 ở Phiếu B B0–B2, B7.1–B7.3, B8); CP4–CP5 (kéo thẻ `S5`, phân tích `S5-21`/`S5-51`/`S5-70`, sửa `lab10/guards.py`, thu hẹp `pilot_scope` ở `config/operating_gates.json`, thêm 2 monitor trong `lab10/monitors.py`, hoàn thiện Phiếu C C0–C12 và `submission/`).
+
+### Đóng góp cụ thể
+
+- CP1–CP2: thiết lập Git/remote `upstream`, kiểm tra `13/13` unit tests; điền và ký `config/acceptance_criteria.json` (hash `05ef76c7`, commit `97e536b`) trước khi chạy đánh giá lần đầu; hoàn thiện Phiếu A.
+- CP3: chạy baseline (`R-base-before-20261118-151428-bde05c`), phân tích lỗi chìm `T-002@55`, code 3 cổng hệ thống trong `lab10/guards.py` (`pre_guard` ghim policy, `write_gate` kiểm tra `issue_refund`, `file_carrier_fault`, lọc PII `notify_carrier`), kiểm thử `--adhoc`, hợp nhất bài từ 3 nhánh (`033c104`), chốt vòng 1 (`34a3f1e5`, commit `c9fd022`).
+- CP4–CP5: kéo thẻ `S5`, phát hiện và sửa 2 vấn đề cốt lõi (hoàn bổ sung phần còn lại `remaining` cho `S5-21` và loại kho sỉ `HCM-B2B` khỏi `pilot_scope`), thêm `estimated_cost_per_ticket_vnd` và `refund_gate_block_rate` vào `lab10/monitors.py`, chạy `grade --incident S5` (`criteria ✅`, `visible ✅`, `regression ✅`, `monitor ✅`), chốt quyết định v2 (`Thu hẹp`) và gom `submission/` (`ĐỦ THÀNH PHẦN`).
+- Sử dụng trợ lý AI (Antigravity / Gemini) để hỗ trợ đọc codebase, thiết kế và kiểm thử cổng, đối chiếu trace/report và biên soạn phiếu; toàn bộ con số và quyết định đã được kiểm chứng lại trên các lần chạy thực tế.
+
+### Bằng chứng
+
+- Ký tiêu chí: commit `97e536b` (`2026-11-18T14:56:36`), hash `05ef76c7`.
+- Nhánh cá nhân & hợp nhất vòng 1: `NguyenKhanhDuy` (`e05482c`), merge `033c104`, chốt vòng 1 `c9fd022` (`34a3f1e5`).
+- Các lần chạy: `R-base-before-20261118-151428-bde05c` (base), `R-base-prepared-20261118-153046-d0beba` (prepared), `R-S5-grade-20261118-163815-d0beba` (S5 trước sửa), `R-S5-after-20261118-163952-d71028` (S5 sau sửa: `pass_rate = 1.0`, `ROI = 1.51`), `R-base-after-20261118-163953-d71028` (`110/110`), `R-S5-grade-20261118-163953-d71028` (grade cuối).
+- Phiếu: Phiếu A (`A1–A5`), Phiếu B (`B0–B2`, `B6`, `B7.1–B7.3`, `B8`), Phiếu C (`C0–C12`).
+
+### Exit ticket
+
+- Học được: Cổng phòng ngừa hiệu quả nhất là cổng đặt ngoài model dựa trên nguồn sự thật (`ledger_rows`, `tracking DB`, `pilot_scope`), và phải đo tách biệt theo từng phân khúc kho để không bị số tổng che mất phân khúc lỗ (`HCM-B2B`).
+- Chưa chắc: Độ trễ đồng bộ sổ cái hoàn tay và tỉ lệ ticket dài thực tế ngoài production tại 4 kho bán lẻ cần được theo dõi sát trước Gate 2.
