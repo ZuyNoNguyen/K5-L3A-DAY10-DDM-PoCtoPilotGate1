@@ -2,3 +2,4 @@
 * text=auto eol=lf
 lab10/guards_round1.py text eol=crlf
 submission/code/guards_round1.py text eol=crlf
+submission/runs/** -text
