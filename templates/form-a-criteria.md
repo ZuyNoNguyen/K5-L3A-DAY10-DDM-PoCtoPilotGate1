@@ -24,8 +24,8 @@ rồi mới chạy đánh giá. Khối 1 không sửa code.
 
 ### Câu 1.2 · Mục tiêu nhìn từ hai người
 
-- Chị Oanh, kế toán đối soát (không dùng trợ lý, nhưng phải khớp sổ với hãng và shop mỗi tuần): …
-- Chị Hạnh, trưởng ca CSKH (phải duyệt những ca trợ lý chuyển sang): …
+- Chị Oanh (NV-OANH), kế toán đối soát: mỗi tuần khớp được khoản hoàn và lỗi hãng với đơn hàng, bưu kiện, số tiền, người chịu phí và bằng chứng tracking/chính sách; không để hoàn trùng, ghi oan lỗi hãng hay thiếu căn cứ đối soát với shop và hãng.
+- Chị Hạnh (NV-HANH), trưởng ca CSKH: tiếp nhận và duyệt đúng thẩm quyền các ca vượt hạn mức/thiếu bằng chứng trong SLA 60 phút; có lý do rõ ràng, không để hàng chờ vượt công suất thực tế (1 người mặc định, 6 ca/giờ), và không đánh đổi tốc độ lấy hoàn sai.
 
 ---
 
@@ -48,12 +48,12 @@ trợ lý có đang gây thiệt hại cho bên ngoài LogiX không; không có 
 
 | | Offline, cho MỘT bước (câu 1.3) | Telemetry production (câu 1.4) |
 |---|---|---|
-| **Bước / hành vi được đo** | | |
-| **Thước đo** (một câu, có đơn vị) | | |
-| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | | |
-| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | | |
-| **Khung thời gian / ngưỡng báo động** | (không áp dụng) | |
-| **Điểm mù** (thước đo này KHÔNG thấy gì) | | |
+| **Bước / hành vi được đo** | | Giám sát dữ liệu cá nhân gửi cho hãng vận chuyển qua lệnh `notify_carrier`. |
+| **Thước đo** (một câu, có đơn vị) | | Số thông báo cho hãng chứa ít nhất một trường PII bị cấm, đơn vị: thông báo vi phạm/ca 8 giờ. |
+| **Dữ liệu** (lấy ở đâu, bao nhiêu, ai gán nhãn) | | Toàn bộ bản ghi `outbound` có đích `carrier:...` hoặc trace sự kiện `tool.notify_carrier` của ca 480 phút; tập trường cấm từ `config/operating_gates.json → legal.pii_fields_blocked_to_third_party`; không cần nhãn đúng/sai, Ops duy trì danh sách trường cấm theo chính sách dữ liệu. |
+| **Cách tính** (công thức, mẫu số, cách xử lý ca thiếu dữ liệu) | | Đếm mỗi thông báo gửi hãng có giao giữa khóa `payload` và tập trường cấm khác rỗng (1 thông báo = 1 vi phạm). Báo thêm tỉ lệ = số vi phạm / tổng số thông báo hãng; nếu không gửi thông báo nào, tỉ lệ N/A và số vi phạm = 0; thiếu log thì đánh dấu không đủ telemetry và chuyển người kiểm tra. |
+| **Khung thời gian / ngưỡng báo động** | (không áp dụng) | Giám sát ngay khi gửi, tổng hợp theo ca 480 phút; báo động đỏ từ 1 thông báo vi phạm, thông báo NV-TUNG để dừng `notify_carrier` và điều tra. Ngưỡng 0 phù hợp `pii_leaks_max = 0` đã ký. |
+| **Điểm mù** (thước đo này KHÔNG thấy gì) | | Không phát hiện PII ẩn trong giá trị text tự do hoặc ở kênh khác, cũng không phát hiện log bị mất; cần kiểm mẫu payload và kênh bên thứ ba độc lập. |
 
 **Ví dụ mẫu (bước "chọn độ trễ" của agent, đừng chép):**
 Thước đo: tỉ lệ lần chạy mà độ trễ agent dùng để tính tiền khác độ trễ theo tracking DB. Dữ liệu: sự kiện `proposal.delay_days_used`
@@ -71,9 +71,9 @@ nhau chia cho số lần chạy có sự kiện `proposal`; lần chạy không 
 
 ### Câu 1.5 · Chọn MỘT kết luận và giải thích một câu
 
-Số minh hoạ trong đề (không phải số của bàn). Khoanh: **(a) · (b) · (c) · (d)**
+Số minh hoạ trong đề (không phải số của bàn). Khoanh: **(b)** — Chưa đủ căn cứ nói Y tốt hơn X.
 
-Giải thích một câu: …
+Giải thích một câu: Chênh lệch một lần chạy (49/50 so với 50/50) chưa chứng minh Y tốt hơn có ý nghĩa thống kê, vì 1,0 vẫn nằm trong khoảng tin cậy 95% [0,94; 1,0] của X.
 
 ---
 
