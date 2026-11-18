@@ -14,7 +14,7 @@ Họ tên đầy đủ và MSSV của **mọi** thành viên; thêm dòng nếu 
 | STT | Họ và tên | MSSV | Vai | Trưởng nhóm |
 | --: | --------- | ---- | --- | :---------: |
 |   1 |           |      |     |             |
-|   2 |           |      |     |             |
+|   2 | Tạ Tiến Dũng    | 2A202603526     | Sản phẩm kinh doanh    | Không            |
 |   3 | Nguyễn Văn Minh | 2A202603551 | Vận hành và pháp lý (Ops/Legal) | Không |
 |   4 |           |      |     |             |
 
@@ -59,3 +59,46 @@ B6 trên `main` được chốt khi mới có lăng kính Kinh doanh. Hai nguy c
 - **Kỹ thuật – INVALID/WRONG (đề xuất cả bàn kiểm tra ở C1):** Chính sách có thể hết hiệu lực hoặc lời kể của khách khác dữ liệu tracking, gây hoàn sai/ghi lỗi oan. Nguồn: `effective_policy`, `db_delay_days`, trace `T-002@55`; cổng vòng 1 đối chiếu trước khi ghi.
 
 Đây là rủi ro cần đối chiếu và kiểm chứng ở CP4, không được dùng để sửa lịch sử checkpoint CP3.
+
+## TaTienDung-2A202603526
+
+### Phần việc phụ trách
+
+- **Vai trong bàn:** Sản phẩm và kinh doanh[cite: 1, 6].
+- **Câu của đề & mục phiếu phụ trách:**
+  - **Vòng 1 · Khối 1 (Phiếu A — `templates/form-a-criteria.md`):** Câu 1.1 (mục tiêu cấp hệ thống, mục A1), Câu 1.5 (đọc khoảng tin cậy 95%, mục A3), Câu 1.6 (xây dựng Bản tiêu chí chấp nhận, ranh giới đầu ra, soát 4 câu hỏi và chốt ngưỡng, mục A4)[cite: 6, 9].
+  - **Vòng 1 · Khối 2 (Phiếu B — `templates/form-b-evaluation-gates.md`):** Câu 2.3 (bản đồ dữ liệu và phân tích concept drift khi chuyển sang `REFUND-v4`, mục B3), Câu 2.5 (Pre-mortem lăng kính Kinh doanh, mục B6), Câu 2.9 (đặt cổng kinh doanh, mục B7.4)[cite: 6, 11, 12].
+  - **Vòng 2 · Khối 3 (Phiếu C — `templates/form-c-incident.md`):** Đọc chỉ số chi phí, ROI, ngân sách hoàn tự động và phối hợp chốt quyết định Gate 1 v2 (mục C12)[cite: 6].
+- **File cấu hình trực tiếp tham gia:** `config/acceptance_criteria.json` (soạn thảo ngưỡng `required`, `nice_to_have`, `business_ops`, `stop_condition`, `decision_rule`) và `config/operating_gates.json` (mục `business`: `daily_refund_cap_vnd`, `cost_budget_per_ticket_vnd`, `pilot_scope`, `roi_min`)[cite: 2, 6, 13].
+
+### Đóng góp cụ thể
+
+- Soạn thảo bộ ngưỡng chất lượng và kinh doanh/vận hành trong `config/acceptance_criteria.json` dựa trên dữ liệu thực tế tại `data/world.json` (`ops_facts`, `ops_limits`: đặt trần chi phí 7.500đ/ticket so với 10.000đ làm tay, `roi_min = 0.3`, các ngưỡng an toàn bằng `0`) trước khi nhóm tiến hành ký niêm phong[cite: 6, 11].
+- Hoàn thiện phân tích mục tiêu hệ thống, giải thích khoảng tin cậy 95% và câu tiêu chí hành động ("Nếu … thì chúng tôi sẽ …") tại Phiếu A (mục A1, A3, A4)[cite: 6, 9].
+- Xây dựng bản đồ dữ liệu nguồn sự thật (`orders[].parcels`, `policies`, `approvals`), chỉ ra rủi ro concept drift vào ngày `2026-12-01` khi chính sách chuyển sang `REFUND-v4` tại Phiếu B (mục B3), và đóng góp phân tích rủi ro ngân sách/kho sỉ `HCM-B2B` vào bảng Pre-mortem (mục B6)[cite: 11, 12].
+- Thiết lập các giới hạn kinh doanh trong `config/operating_gates.json` mục `business` (`daily_refund_cap_vnd = 1500000`, `cost_budget_per_ticket_vnd = 1500`, `pilot_scope`, `roi_min = 0.3`) và giải trình cơ sở số liệu tại Phiếu B (mục B7.4)[cite: 11, 12, 13].
+- Đối chiếu các chỉ số kinh doanh và vận hành (chi phí/ticket, ROI, tổng tiền hoàn so với trần) ở cả hai vòng để cùng nhóm thống nhất quyết định Gate 1 v2 (`Thu hẹp`) trên thẻ sự cố `S5`[cite: 6].
+
+### Bằng chứng
+
+- **Thẻ sự cố & Quyết định v2:** Thẻ `S5` · Quyết định v2: `Thu hẹp` (theo commit `20c00b8`).
+- **Mã commit:**
+  - `033c104` (merge phần `operating_gates.json` mục `business` và Phiếu B từ `TaTienDung`)[cite: 13].
+  - `c9fd022` (chốt cổng vòng 1, quyết định v1).
+  - `c9ddf39` (hoàn thiện 4 lăng kính Pre-mortem mục B6)[cite: 12].
+  - `20c00b8` (hoàn thành vòng 2 thẻ `S5`, quyết định v2 `Thu hẹp`, đủ thành phần).
+- **Mã lần chạy (`submission/runs/`):**
+  - `submission/runs/R-S5-before-20261118-163954-d71028/` (mốc `base`)
+  - `submission/runs/R-S5-prepared-20261118-163954-d71028/` (mốc `prepared` - cổng vòng 1)
+  - `submission/runs/R-S5-after-20261118-163954-d71028/` (mốc `after` - cổng vòng 2)
+  - `submission/runs/grade-report.md` và `submission/runs/journal.jsonl`
+- **Dòng trong phiếu:**
+  - `templates/form-a-criteria.md`: Mục A1 (câu 1.1), A3 (câu 1.5), A4 (câu 1.6)[cite: 6, 9].
+  - `templates/form-b-evaluation-gates.md`: Mục B3 (câu 2.3), B6 (lăng kính Kinh doanh), B7.4 (câu 2.9)[cite: 6, 12].
+  - `templates/form-c-incident.md`: Mục C12 (quyết định v2 `Thu hẹp` và đối chiếu chỉ số kinh doanh)[cite: 6].
+  - `config/operating_gates.json`: Khối `"business"`[cite: 1, 13].
+
+### Exit ticket
+
+- **Một điều học được:** Hiểu rõ tầm quan trọng của việc khóa cứng tiêu chí chấp nhận (Acceptance Criteria) trước khi chạy đánh giá đầu tiên để tránh thiên lệch hợp lý hóa sau khi thấy số liệu, đồng thời thấy được rằng một cổng kiểm soát kinh doanh bằng con số (như trần hoàn tiền ngày hay giới hạn phạm vi kho pilot) có thể chặn rủi ro tài chính hiệu quả mà không cần phức tạp hóa prompt hay code[cite: 1, 2, 10].
+- **Một điều còn chưa chắc:** Cách hiệu chỉnh tối ưu sự đánh đổi (trade-off) giữa tỉ lệ kiểm mẫu (`review_sampling_pct`) và số người trực ca (`reviewers_on_shift`) khi lưu lượng thực tế tăng đột biến gấp 3–4 lần vào mùa sale lớn để vừa giữ hàng chờ dưới SLA 60 phút vừa không đẩy chi phí mỗi ticket vượt mức làm tay 10.000đ[cite: 1, 10, 11].
